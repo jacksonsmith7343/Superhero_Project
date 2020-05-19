@@ -12,10 +12,10 @@ namespace MyFavoriteSuperHero_Project.Controllers
     
     public class HeroController : Controller
     {
-        private readonly ApplicationDbContext context;
+        private readonly ApplicationDbContext _context;
         public HeroController(ApplicationDbContext context)
         {
-            context = new ApplicationDbContext();
+            _context = context;
         }
         
 
@@ -23,8 +23,8 @@ namespace MyFavoriteSuperHero_Project.Controllers
         // GET: Hero
         public ActionResult Index()
         {
-
-            return View();
+            
+            return View(_context.Heroes);
         }
 
         // GET: Hero/Details/5
@@ -36,8 +36,9 @@ namespace MyFavoriteSuperHero_Project.Controllers
         // GET: Hero/Create
         public ActionResult Create()
         {
-            Hero hero = new Hero();
-            return View(hero);
+            //Hero hero = new Hero();
+           
+            return View();
         }
 
         // POST: Hero/Create
@@ -48,8 +49,8 @@ namespace MyFavoriteSuperHero_Project.Controllers
             try
             {
                 // TODO: Add insert logic here
-                context.Heroes.Add(hero);
-                context.SaveChanges();
+                _context.Heroes.Add(hero);
+                _context.SaveChanges();
                 return RedirectToAction("Index");
             }
             catch
@@ -61,6 +62,7 @@ namespace MyFavoriteSuperHero_Project.Controllers
         // GET: Hero/Edit/5
         public ActionResult Edit(int id)
         {
+            var heroInDb = _context.Heroes.Where(s => s.Id == id).FirstOrDefault();
             return View();
         }
 
