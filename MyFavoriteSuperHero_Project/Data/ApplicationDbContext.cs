@@ -12,8 +12,9 @@ namespace MyFavoriteSuperHero_Project.Data
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
             : base(options)
         {
-            DbSet<Hero> Heroes;
+            
 
         }
+        public DbSet<Hero> Heroes { get; set; }
     }
 }
