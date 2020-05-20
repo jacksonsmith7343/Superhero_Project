@@ -29,7 +29,7 @@ namespace MyFavoriteSuperHero_Project.Controllers
         public ActionResult Details(int id)
         {
             var heroInDb = _context.Heroes.Where(s => s.Id == id).FirstOrDefault();
-            return View(_context.Heroes);
+            return View(heroInDb);
         }
 
         // GET: Hero/Create
@@ -92,18 +92,19 @@ namespace MyFavoriteSuperHero_Project.Controllers
         public ActionResult Delete(int id)
         {
             var heroInDb = _context.Heroes.Where(s => s.Id == id).FirstOrDefault();
-            return View(id);
+            return View(heroInDb);
         }
 
         // POST: Hero/Delete/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Delete(Hero hero)
+        public ActionResult Delete(int id, Hero hero)
         {
             try
             {
                 // TODO: Add delete logic here
-                _context.Heroes.Remove(hero);
+                var heroInDb = _context.Heroes.Where(s => s.Id == id).FirstOrDefault();
+                heroInDb = hero;
                 _context.SaveChanges();
                 return RedirectToAction("Index");
             }
