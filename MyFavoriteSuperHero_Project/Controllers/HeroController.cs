@@ -18,8 +18,6 @@ namespace MyFavoriteSuperHero_Project.Controllers
             _context = context;
         }
         
-
-
         // GET: Hero
         public ActionResult Index()
         {
@@ -30,14 +28,13 @@ namespace MyFavoriteSuperHero_Project.Controllers
         // GET: Hero/Details/5
         public ActionResult Details(int id)
         {
-            return View();
+            var heroInDb = _context.Heroes.Where(s => s.Id == id).FirstOrDefault();
+            return View(_context.Heroes);
         }
 
         // GET: Hero/Create
         public ActionResult Create()
         {
-            //Hero hero = new Hero();
-           
             return View();
         }
 
@@ -60,22 +57,29 @@ namespace MyFavoriteSuperHero_Project.Controllers
         }
 
         // GET: Hero/Edit/5
-        public ActionResult Edit(int id)
+        public ActionResult Edit(int id, Hero hero)
         {
             var heroInDb = _context.Heroes.Where(s => s.Id == id).FirstOrDefault();
-            return View();
+            heroInDb.Name = hero.Name;
+            heroInDb.AlterEgo = hero.AlterEgo;
+            heroInDb.PrimarySuperheroAbility = hero.PrimarySuperheroAbility;
+            heroInDb.SecondarySuperheroAbility = hero.SecondarySuperheroAbility;
+            heroInDb.CatchPhrase = hero.CatchPhrase;
+            return View(heroInDb);
         }
 
         // POST: Hero/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(int id, IFormCollection collection)
+        public ActionResult Edit( Hero hero)
         {
             try
             {
                 // TODO: Add update logic here
-
-                return RedirectToAction(nameof(Index));
+                
+                _context.SaveChanges();
+                return RedirectToAction("Index");
+                
             }
             catch
             {
@@ -86,19 +90,21 @@ namespace MyFavoriteSuperHero_Project.Controllers
         // GET: Hero/Delete/5
         public ActionResult Delete(int id)
         {
-            return View();
+            var heroInDb = _context.Heroes.Where(s => s.Id == id).FirstOrDefault();
+            return View(id);
         }
 
         // POST: Hero/Delete/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Delete(int id, IFormCollection collection)
+        public ActionResult Delete(Hero hero)
         {
             try
             {
                 // TODO: Add delete logic here
-
-                return RedirectToAction(nameof(Index));
+                _context.Heroes.Remove(hero);
+                _context.SaveChanges();
+                return RedirectToAction("Index");
             }
             catch
             {
