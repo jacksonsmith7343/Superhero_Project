@@ -57,26 +57,27 @@ namespace MyFavoriteSuperHero_Project.Controllers
         }
 
         // GET: Hero/Edit/5
-        public ActionResult Edit(int id, Hero hero)
+        public ActionResult Edit(int id)
         {
             var heroInDb = _context.Heroes.Where(s => s.Id == id).FirstOrDefault();
-            heroInDb.Name = hero.Name;
-            heroInDb.AlterEgo = hero.AlterEgo;
-            heroInDb.PrimarySuperheroAbility = hero.PrimarySuperheroAbility;
-            heroInDb.SecondarySuperheroAbility = hero.SecondarySuperheroAbility;
-            heroInDb.CatchPhrase = hero.CatchPhrase;
+            
             return View(heroInDb);
         }
 
         // POST: Hero/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit( Hero hero)
+        public ActionResult Edit(int id, Hero hero)
         {
             try
             {
                 // TODO: Add update logic here
-                
+                var heroInDb = _context.Heroes.Where(s => s.Id == id).FirstOrDefault();
+                heroInDb.Name = hero.Name;
+                heroInDb.AlterEgo = hero.AlterEgo;
+                heroInDb.PrimarySuperheroAbility = hero.PrimarySuperheroAbility;
+                heroInDb.SecondarySuperheroAbility = hero.SecondarySuperheroAbility;
+                heroInDb.CatchPhrase = hero.CatchPhrase;
                 _context.SaveChanges();
                 return RedirectToAction("Index");
                 
